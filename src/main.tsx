@@ -1,35 +1,30 @@
+// src/main.tsx
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { MsalProvider, PublicClientApplication } from '@azure/msal-react'
-import { ConfirmProvider } from 'material-ui-confirm'
-import { ToastContainer } from 'react-toastify'
+import { MsalProvider } from '@azure/msal-react'
+import { PublicClientApplication } from '@azure/msal-browser' // ✅ from msal-browser
 import App from './App'
-import { StoreProvider } from './store/provider'
+import './index.css'
 
-const queryClient = new QueryClient()
-
-const msalInstance = new PublicClientApplication({
+const msal = new PublicClientApplication({
   auth: {
-    clientId: import.meta.env.VITE_AZURE_AD_CLIENT_ID || 'YOUR_AZURE_AD_CLIENT_ID',
-    authority: import.meta.env.VITE_AZURE_AD_AUTHORITY || undefined,
-    redirectUri: '/'
+    clientId: import.meta.env.VITE_MSAL_CLIENT_ID ?? 'dummy-client-id',
+    authority: import.meta.env.VITE_MSAL_AUTHORITY ?? 'https://login.microsoftonline.com/common',
+    redirectUri: import.meta.env.VITE_MSAL_REDIRECT_URI ?? '/'
   }
 })
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const queryClient = new QueryClient()
+
+createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MsalProvider instance={msalInstance}>
+    <MsalProvider instance={msal}>
       <QueryClientProvider client={queryClient}>
-        <StoreProvider>
-          <BrowserRouter>
-            <ConfirmProvider>
-              <App />
-              <ToastContainer position="bottom-right" />
-            </ConfirmProvider>
-          </BrowserRouter>
-        </StoreProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </QueryClientProvider>
     </MsalProvider>
   </React.StrictMode>
