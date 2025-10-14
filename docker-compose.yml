@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  react-enterprise-starter:
+    image: ghcr.io/rexyrex/hello-react:${IMAGE_TAG}  # <-- replace OWNER/REPO (e.g., rexyrex/react-enterprise-starter)
+    container_name: react-enterprise-starter
+    ports:
+      - "2281:80"       # host:container
+    restart: unless-stopped
