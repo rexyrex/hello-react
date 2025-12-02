@@ -31,6 +31,8 @@ VITE_POWERBI_REPORT_ID=...
 VITE_POWERBI_EMBED_TOKEN=...
 ```
 
+- feature 2
+
 ## Notes
 - PowerBI & MSAL require real credentials to function; without them the pages show helpful placeholders.
 - The container serves a static build via Nginx.
